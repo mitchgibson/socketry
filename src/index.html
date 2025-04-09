@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Socket.IO chat</title>
+  </head>
+  <body class="bg-gray-700 min-h-screen p-4">
+    <div class="max-w-2xl mx-auto">
+      <ul id="messages" class="space-y-2 mb-4">
+        <!-- Messages will be inserted here -->
+      </ul>
+      <form id="form" action="" class="flex gap-2">
+        <input 
+          id="input" 
+          autocomplete="off"
+          class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+        />
+        <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+          Send
+        </button>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      const form = document.getElementById("form");
+      const input = document.getElementById("input");
+      const messages = document.getElementById("messages");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (input.value) {
+          // socket.emit("chat message", input.value);
+          console.log(input.value);
+          input.value = "";
+        }
+      });
+
+      document.body.addEventListener('click', event => {
+        const data = {
+          type: event.type,
+          target: event.target.nodeName,
+        };
+        console.log('DOM Event:', data);
+        socket.emit('click-event', data);
+      }, {
+        capture: true,
+        passive: true
+      });
+    </script>
+  </body>
+</html>
